@@ -1,0 +1,91 @@
+CREATE DATABASE EDUX;
+USE EDUX
+
+--TABELAS
+
+CREATE TABLE Instituicao(
+IdInstituicao INT IDENTITY PRIMARY KEY,
+Nome VARCHAR(50),
+Logradouro VARCHAR(100),
+Numero VARCHAR(50),
+Bairro VARCHAR(50),
+Cidade VARCHAR(100),
+UF VARCHAR(50),
+CEP VARCHAR(10)
+);
+
+
+CREATE TABLE Categoria(
+IdCategoria INT IDENTITY PRIMARY KEY,
+Descricao VARCHAR(50)
+);
+
+CREATE TABLE Tipo_Usuario(
+IdTipo_Usuario INT IDENTITY PRIMARY KEY,
+Tipo VARCHAR(50)
+);
+
+CREATE TABLE Curso(
+IdCurso INT IDENTITY PRIMARY KEY,
+Nome VARCHAR(100),
+Duracao Datetime,
+Descricao VARCHAR(250)
+);
+CREATE TABLE Objetivo(
+IdObjetivo INT IDENTITY PRIMARY KEY,
+IdCategoria INT FOREIGN KEY REFERENCES Categoria(IdCategoria),
+Descricao VARCHAR(50)
+);
+
+CREATE TABLE Usuario(
+IdUsuario INT IDENTITY PRIMARY KEY,
+IdTipo_Usuario INT FOREIGN KEY REFERENCES Tipo_Usuario(IdTipo_Usuario),
+IdInstituicao INT FOREIGN KEY REFERENCES Instituicao(IdInstituicao),
+Nome VARCHAR(100),
+Idade INT,
+);
+
+CREATE TABLE Turma(
+IdTurma INT IDENTITY PRIMARY KEY,
+IdCurso INT FOREIGN KEY REFERENCES Curso(IdCurso),
+Periodo VARCHAR(50),
+Semestre VARCHAR(50),
+Serie VARCHAR(50),
+Capacidade INT,
+);
+
+CREATE TABLE Post(
+IdPost INT IDENTITY PRIMARY KEY,
+IdUsuario INT FOREIGN KEY REFERENCES Usuario(IdUsuario),
+Texto VARCHAR(250),
+Imagem VARCHAR(200),
+Horario DATETIME,
+);
+
+CREATE TABLE Dicas(
+IdDicas INT IDENTITY PRIMARY KEY,
+IdUsuario INT FOREIGN KEY REFERENCES Usuario(IdUsuario),
+Tema VARCHAR(250),
+Descricao VARCHAR(250)
+);
+
+CREATE TABLE Prof_Turma(
+IdProf_Turma INT IDENTITY PRIMARY KEY,
+IdUsuario INT FOREIGN KEY REFERENCES Usuario(IdUsuario),
+IdTurma INT FOREIGN KEY REFERENCES Turma(IdTurma),
+);
+
+CREATE TABLE Aluno_Turma(
+IdALuno_Turma INT IDENTITY PRIMARY KEY,
+IdUsuario INT FOREIGN KEY REFERENCES Usuario(IdUsuario),
+Turma INT FOREIGN KEY REFERENCES Turma(IdTurma),
+
+);
+
+CREATE TABLE Objetivo_Aluno(
+IdObjetivo_Aluno INT IDENTITY PRIMARY KEY,
+IdObjetivo INT FOREIGN KEY REFERENCES Objetivo(IdObjetivo),
+IdAluno_Turma INT FOREIGN KEY REFERENCES Aluno_Turma(IdAluno_Turma),
+Nota DECIMAL DEFAULT NULL,
+DataEntrega DATETIME
+);
